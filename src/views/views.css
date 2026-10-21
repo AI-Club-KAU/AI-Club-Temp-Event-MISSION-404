@@ -1,0 +1,76 @@
+/* أشكال المعطيات الخاصة بكل تحدٍّ */
+.small { font-size: 14px; }
+.card h3 { font-size: 15px; color: var(--ink-2); font-weight: 600; margin-bottom: 8px; }
+
+/* 1 الأضواء */
+.v-lights { display: grid; gap: 10px; }
+.lrow { display: grid; grid-template-columns: 56px 1fr 34px; align-items: center; gap: 10px; }
+.lrow .lbl { font-size: 13px; color: var(--ink-2); }
+.lrow .bulbs { display: flex; flex-wrap: wrap; gap: 5px; }
+.lrow .bulbs i { width: 12px; height: 12px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px color-mix(in srgb, var(--gold) 70%, transparent); }
+.lrow .bulbs.off i { background: transparent; box-shadow: none; border: 1.5px dashed var(--ink-2); }
+.lrow .n { text-align: left; font-weight: 700; }
+.lrow.unknown .n { color: var(--gold); font-size: 20px; }
+
+/* 2 الطاقة */
+.v-eq { display: grid; gap: 10px; }
+.v-eq .eq { font-size: 24px; text-align: center; padding: 8px; background: var(--paper); border-radius: var(--radius-s); border: 1px solid var(--grid); }
+.v-eq .eq.ask { border-color: var(--signal); }
+
+/* 3 السجل */
+.v-log { border: 1px solid var(--grid); border-radius: var(--radius-m); overflow: hidden; background: var(--paper); }
+.v-log .bar { padding: 6px 12px; background: var(--panel-2); font-size: 13px; color: var(--ink-2); text-align: left; }
+.v-log .body { padding: 12px 16px; font-size: 16px; line-height: 2; }
+.v-log .body div { color: var(--ink); }
+
+/* 4 الرسائل */
+.v-facts ol { margin: 0; padding-inline-start: 22px; }
+.v-facts li { margin: 4px 0; }
+.v-chat { display: grid; gap: 8px; }
+.bubble { display: flex; gap: 10px; align-items: flex-start; background: var(--panel-2); border: 1px solid var(--grid); border-radius: 14px 14px 14px 4px; padding: 10px 12px; max-width: 92%; }
+.bubble b { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); color: var(--signal); font-size: 14px; }
+
+/* 5 الاستبيان */
+.v-ai { border-style: dashed; }
+.v-ai .tag { display: inline-block; font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
+.v-ai p { font-size: 19px; }
+
+/* 6 الروابط والقواعد */
+.v-rule p { font-size: 16px; }
+
+/* 7 القفل */
+.v-lock { text-align: center; }
+.slots, .digits { display: flex; justify-content: center; gap: 10px; direction: ltr; }
+.slot { width: 58px; height: 68px; display: grid; place-items: center; font-size: 34px; font-weight: 700; border: 2px solid var(--signal); border-radius: 12px; color: var(--signal); background: var(--paper); box-shadow: 0 0 18px -4px color-mix(in srgb, var(--signal) 60%, transparent); }
+.slot-names { display: flex; justify-content: center; gap: 10px; direction: ltr; margin-top: 6px; }
+.slot-names span { width: 58px; font-size: 13px; color: var(--ink-2); }
+.v-clues { display: grid; gap: 8px; }
+.clue { display: flex; gap: 14px; align-items: center; padding: 12px; }
+.clue .digits { justify-content: flex-start; gap: 4px; flex: none; }
+.clue .digits span { width: 30px; height: 36px; display: grid; place-items: center; font-weight: 700; font-size: 18px; border: 1.5px solid var(--grid); border-radius: 6px; background: var(--paper); }
+.clue p { font-size: 15px; line-height: 1.6; }
+
+/* 8 التحليل */
+.bar-row { display: grid; grid-template-columns: minmax(0, 9em) 1fr 32px; align-items: center; gap: 10px; margin: 8px 0; font-size: 15px; }
+.bar-row .track { height: 12px; background: var(--paper); border-radius: 6px; overflow: hidden; }
+.bar-row .fill { display: block; height: 100%; background: var(--signal); border-radius: 6px; }
+.bar-row .n { text-align: left; font-weight: 700; }
+
+/* 9 الجدولة */
+.v-rooms { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.room { padding: 12px; font-size: 15px; }
+.room h3 { color: var(--ink); font-size: 17px; margin-bottom: 4px; }
+.room .pc { margin-top: 4px; font-size: 14px; }
+.room .pc.yes { color: var(--restored); }
+.room .pc.no { color: var(--ink-2); }
+.acts { margin: 0; padding-inline-start: 20px; }
+.acts li { margin: 4px 0; }
+
+/* 10 القرار */
+.v-compare th.official, .v-compare td.official { background: color-mix(in srgb, var(--restored) 10%, transparent); color: var(--ink); }
+.v-compare thead th.official { color: var(--restored); }
+
+.v-compare-wrap { padding: 6px; }
+table.grid.v-compare { table-layout: fixed; font-size: 13.5px; }
+table.grid.v-compare th, table.grid.v-compare td { white-space: normal; padding: 8px 4px; line-height: 1.45; vertical-align: top; }
+table.grid.v-compare th:first-child, table.grid.v-compare td:first-child { width: 20%; color: var(--ink-2); }
