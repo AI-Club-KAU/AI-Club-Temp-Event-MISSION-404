@@ -130,7 +130,7 @@ export function EntryScreen({ onStarted }: { onStarted: (r: Awaited<ReturnType<t
       <div className="field">
         <label htmlFor="name">اسم العرض</label>
         <input id="name" value={name} onChange={e => setName(e.target.value)} maxLength={20} autoComplete="nickname" placeholder="مثال: سارة م" required />
-        <small>من 2 إلى 20 حرفًا. لا تكتب اسمك الكامل أو أي معلومة شخصية.</small>
+      
       </div>
       <fieldset className="depts">
         <legend>قسمك في النادي</legend>
