@@ -58,6 +58,8 @@ export type AnswerResponse = {
   max: number;
   message: string;
   done: boolean;
+  /** للوحدة 10 فقط: خلايا الخطر والشحن، تُرسل بعد الإجابة لعرض حركة الروبوت */
+  reveal?: { dangers: [number, number][]; charge: [number, number] } | null;
 };
 
 export type HintResponse = { ok: true; challengeId: string; hint: string; cost: number };
@@ -77,7 +79,7 @@ export type ReviewItem = {
   explanation: string;
 };
 
-export type LeaderboardEntry = { rank: number; name: string; score: number; time?: number; title: string | null };
+export type LeaderboardEntry = { rank: number; name: string; score: number; time?: number; title: string | null; dept?: string };
 export type Leaderboard = {
   ok: true;
   final: boolean;

@@ -410,3 +410,14 @@ table.grid td.num { font-family: var(--mono); direction: ltr; text-align: left; 
 .pod .base > span { display: grid; justify-items: center; line-height: 1.2; }
 .pod .base small, .lb-row .sc small { display: block; font-size: 12px; font-weight: 500; color: var(--ink-2); margin-top: 2px; }
 .lb-row .sc { text-align: left; line-height: 1.2; }
+
+/* شارة القسم في لوحة المتصدرين */
+.dept {
+  display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 11.5px; line-height: 1.5; padding: 0 8px; border-radius: 999px;
+  color: var(--signal); background: color-mix(in srgb, var(--signal) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--signal) 35%, transparent);
+}
+.pod .dept { margin-top: 4px; }
+.lb-row .who > span.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-width: 0; }
+.lb-row .meta .top { color: var(--gold); }

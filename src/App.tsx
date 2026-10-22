@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api, ApiError, local } from './api';
+import { BOARD_HASH } from './config';
 import { ChallengeScreen } from './ChallengeScreen';
 import {
   BoardScreen, BootScreen, CompleteScreen, EndScreen, EntryScreen,
@@ -20,6 +21,8 @@ export default function App() {
 
   // عند فتح الموقع: إن كانت هناك محاولة محفوظة على هذا الجهاز نكملها
   useEffect(() => {
+    // رابط المنظمين: يفتح اللوحة مباشرة دون لعب
+    if (location.hash === `#${BOARD_HASH}`) { setScreen('board'); return; }
     const id = local.get().attemptId;
     if (!id) { setScreen('start'); return; }
     api.resume(id)
@@ -123,6 +126,6 @@ export default function App() {
         ? <BoardScreen onBack={() => setScreen('complete')} onEnd={() => setScreen('end')} />
         : <BoardScreen onBack={() => setScreen('start')} />;
     case 'end':
-      return <EndScreen />;
+      return <EndScreen onBoard={() => setScreen('board')} />;
   }
 }

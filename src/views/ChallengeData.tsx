@@ -1,8 +1,9 @@
 import type { Challenge } from '../types';
+import { RobotBoard, RobotNotes, type RobotPlay } from './RobotBoard';
 import './views.css';
 
 /** يعرض معطيات كل تحدٍّ بشكل الشيء الذي تمثّله، دون أي معلومة تكشف الإجابة */
-export function ChallengeData({ ch }: { ch: Challenge }) {
+export function ChallengeData({ ch, play }: { ch: Challenge; play?: RobotPlay | null }) {
   const d = ch.data;
   switch (ch.view) {
     case 'lights':
@@ -134,6 +135,14 @@ export function ChallengeData({ ch }: { ch: Challenge }) {
             </table>
           </div>
           <div className="v-rule card"><h3>قاعدة الفريق</h3><p>{d.rule}</p></div>
+        </div>
+      );
+
+    case 'robot':
+      return (
+        <div className="stack">
+          <RobotBoard d={d} play={play} />
+          <RobotNotes d={d} />
         </div>
       );
 

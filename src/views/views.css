@@ -66,7 +66,7 @@
 .acts { margin: 0; padding-inline-start: 20px; }
 .acts li { margin: 4px 0; }
 
-/* 10 القرار */
+/* (قديم) جدول المقارنة */
 .v-compare th.official, .v-compare td.official { background: color-mix(in srgb, var(--restored) 10%, transparent); color: var(--ink); }
 .v-compare thead th.official { color: var(--restored); }
 
@@ -74,3 +74,51 @@
 table.grid.v-compare { table-layout: fixed; font-size: 13.5px; }
 table.grid.v-compare th, table.grid.v-compare td { white-space: normal; padding: 8px 4px; line-height: 1.45; vertical-align: top; }
 table.grid.v-compare th:first-child, table.grid.v-compare td:first-child { width: 20%; color: var(--ink-2); }
+
+/* 10 القرار: شبكة الروبوت */
+.v-robot { padding: 14px; }
+.rb { direction: ltr; display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px 8px; }
+.rb-rows { display: grid; grid-template-rows: repeat(5, 1fr); align-items: center; }
+.rb-rows span, .rb-cols span { font-family: var(--mono); font-size: 13px; color: var(--ink-2); text-align: center; }
+.rb-cols { display: grid; grid-template-columns: repeat(5, 1fr); }
+.rb-grid { --g: 7px; position: relative; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: var(--g); }
+.rb-grid .cell {
+  aspect-ratio: 1; border-radius: 12px; display: grid; place-items: center; font-size: clamp(20px, 6vw, 28px);
+  background: color-mix(in srgb, var(--panel-2) 70%, var(--paper)); border: 1px solid var(--grid);
+  transition: background .3s ease, border-color .3s ease;
+}
+.rb-grid .cell.core { border: 1.5px solid var(--restored); background: color-mix(in srgb, var(--restored) 10%, var(--paper)); box-shadow: 0 0 16px -4px color-mix(in srgb, var(--restored) 70%, transparent); }
+.rb-grid .cell.trail { background: color-mix(in srgb, var(--signal) 22%, var(--paper)); border-color: color-mix(in srgb, var(--signal) 60%, var(--grid)); }
+.rb-grid .cell.charge { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 16%, var(--paper)); }
+.rb-grid .cell.danger { border-color: var(--fault); background: color-mix(in srgb, var(--fault) 18%, var(--paper)); animation: fadein .4s ease both; }
+.rb-grid.won .cell.core { background: var(--restored); animation: pop .7s ease 1; }
+/* الروبوت فوق الشبكة ويتحرك بين الخلايا */
+.rb-grid .bot {
+  position: absolute; pointer-events: none; display: grid; place-items: center;
+  width: calc((100% - (var(--n) - 1) * var(--g)) / var(--n));
+  aspect-ratio: 1; font-size: clamp(24px, 7vw, 32px);
+  left: calc(var(--c) * ((100% - (var(--n) - 1) * var(--g)) / var(--n) + var(--g)));
+  bottom: calc(var(--r) * ((100% - (var(--n) - 1) * var(--g)) / var(--n) + var(--g)));
+  transition: left .38s cubic-bezier(.3, .7, .3, 1), bottom .38s cubic-bezier(.3, .7, .3, 1);
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / .5));
+}
+.rb-grid .bot.boom { animation: shake .5s ease 1; }
+.rb-grid .bot.bump { animation: shake .5s ease 1; }
+.rb-grid .bot.win { opacity: 0; transition: opacity .6s ease .3s, left .38s, bottom .38s; }
+@keyframes shake { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+.rb-legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 18px; margin-top: 12px; font-size: 14px; color: var(--ink-2); }
+.rb-status { margin-top: 12px; text-align: center; font-weight: 700; font-size: 16px; animation: fadein .3s ease both; }
+.rb-status.ok { color: var(--restored); }
+.rb-status.no { color: var(--fault); }
+
+.v-notes ol { margin: 0; padding-inline-start: 22px; }
+.v-notes li { margin: 6px 0; }
+.v-notes p { margin-top: 10px; }
+
+/* أسهم الخيارات: تُقرأ من اليسار لليمين */
+.arrows { display: flex; flex-wrap: wrap; gap: 6px; direction: ltr; justify-content: flex-start; }
+.arrows i {
+  font-style: normal; width: 34px; height: 34px; display: grid; place-items: center;
+  border-radius: 9px; background: var(--paper); border: 1px solid var(--grid); font-size: 17px; line-height: 1;
+}
+.opt[aria-checked='true'] .arrows i { border-color: color-mix(in srgb, var(--signal) 55%, var(--grid)); }

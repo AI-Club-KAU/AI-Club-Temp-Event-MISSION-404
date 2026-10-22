@@ -103,7 +103,7 @@ export function InstructionsScreen({ onNext, onBack }: { onNext: () => void; onB
 
 /* ------------------------------ الدخول ------------------------------ */
 // يجب أن تطابق قائمة DEPARTMENTS في Code.gs حرفيًا
-const DEPARTMENTS = ['الدعم والتطوير', 'العلاقات العامة', 'الإعلام والتسويق', 'التخطيط والفعاليات', 'الهاكثونات', 'التقني', 'قادة المشاريع'];
+const DEPARTMENTS = ['الدعم والتطوير', 'العلاقات العامة', 'الإعلام والتسويق', 'التخطيط والفعاليات', 'الهاكاثونات', 'التقني', 'قادة المشاريع'];
 
 export function EntryScreen({ onStarted }: { onStarted: (r: Awaited<ReturnType<typeof api.start>>) => void }) {
   const [name, setName] = useState(local.get().name || '');
@@ -277,6 +277,7 @@ function Podium({ top, me }: { top: LeaderboardEntry[]; me?: string }) {
             <span className="medal" aria-label={`المركز ${rankWord(place)}`}>{MEDALS[place - 1]}</span>
             <span className="av" aria-hidden="true">{initial(e.name)}</span>
             <span className="nm">{e.name}</span>
+            {e.dept && <span className="dept">{e.dept}</span>}
             <span className="tt">{e.title}</span>
             <span className="base"><span>{e.score}<small>⏱ {clock(e.time)}</small></span></span>
           </div>
@@ -332,7 +333,10 @@ export function BoardScreen({ onBack, onEnd }: { onBack?: () => void; onEnd?: ()
                 <span className="av" aria-hidden="true">{initial(e.name)}</span>
                 <span className="who">
                   <b>{e.name}{mine && <span className="you-pill">أنت</span>}</b>
-                  <span className={e.rank <= 5 ? 'top' : ''}>{e.title}</span>
+                  <span className="meta">
+                    {e.title && <span className={e.rank <= 5 ? 'top' : ''}>{e.title}</span>}
+                    {e.dept && <span className="dept">{e.dept}</span>}
+                  </span>
                   <span className="bar" aria-hidden="true"><i style={{ width: `${e.score}%` }} /></span>
                 </span>
                 <span className="sc">{e.score}<small>⏱ {clock(e.time)}</small></span>
@@ -350,7 +354,7 @@ export function BoardScreen({ onBack, onEnd }: { onBack?: () => void; onEnd?: ()
 }
 
 /* ------------------------------ النهاية ------------------------------ */
-export function EndScreen() {
+export function EndScreen({ onBoard }: { onBoard: () => void }) {
   const all: NodeState[] = Array(10).fill('restored');
   return (
     <div className="shell stack fade-in center">
@@ -361,6 +365,7 @@ export function EndScreen() {
       <div className="spacer" />
       <div style={{ display: 'flex', justifyContent: 'center' }}><Brand /></div>
       <p className="muted small"><span className="mono">{CLUB_ACCOUNT}</span>، {CLUB_HASHTAG}</p>
+      <div className="dock"><div><button className="btn quiet" onClick={onBoard}>لوحة المتصدرين</button></div></div>
     </div>
   );
 }

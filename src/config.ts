@@ -8,3 +8,5 @@ export const API_URL = 'https://script.google.com/macros/s/AKfycbyqgrJ1r_KlweGDl
 export const CLUB_NAME = 'AIClub';
 export const CLUB_ACCOUNT = 'FCIT_AICLUB';
 export const CLUB_HASHTAG = '#نقود_المستقبل';
+/** رابط المنظمين لفتح لوحة المتصدرين مباشرة: رابط الموقع + #nawa-live-k7q3 */
+export const BOARD_HASH = 'nawa-live-k7q3';

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { api, ApiError } from './api';
 import { ChallengeData } from './views/ChallengeData';
+import { Arrows, type RobotPlay } from './views/RobotBoard';
+import { movesOf } from './views/robot';
 import { LETTERS, toAr } from './screens';
 import type { AnswerResponse, Challenge, NodeState, Progress } from './types';
 
@@ -50,8 +52,9 @@ export function ChallengeScreen(p: Props) {
   const [asking, setAsking] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [play, setPlay] = useState<RobotPlay | null>(null);
 
-  useEffect(() => { setChoice(null); setAsking(false); setError(''); window.scrollTo(0, 0); }, [ch.id]);
+  useEffect(() => { setChoice(null); setAsking(false); setError(''); setPlay(null); window.scrollTo(0, 0); }, [ch.id]);
 
   const run = async (fn: () => Promise<void>) => {
     setBusy(true); setError('');
@@ -70,10 +73,16 @@ export function ChallengeScreen(p: Props) {
 
   const submit = () => choice && run(async () => {
     const r = await api.answer(p.attemptId, ch.id, choice);
+    // وحدة الروبوت: نعرض الحركة أولًا، ثم تظهر النتيجة بعد ما يوصل أو يتوقف
+    const opt = ch.options.find(o => o.id === choice);
+    if (ch.view === 'robot' && r.reveal && opt) {
+      setPlay({ moves: movesOf(opt.text), reveal: r.reveal, onDone: () => p.onAnswered(r) });
+      return;
+    }
     p.onAnswered(r);
   });
 
-  const locked = !!feedback;
+  const locked = !!feedback || !!play;
 
   return (
     <div className="shell stack fade-in" key={ch.id}>
@@ -98,7 +107,7 @@ export function ChallengeScreen(p: Props) {
 
       <p className="story"><span className="from">نواة</span>{ch.story}</p>
 
-      <ChallengeData ch={ch} />
+      <ChallengeData ch={ch} play={play} />
 
       <div className="question">
         <span className="q-label">السؤال</span>
@@ -110,7 +119,9 @@ export function ChallengeScreen(p: Props) {
           <button key={o.id} type="button" role="radio" className="opt" aria-checked={choice === o.id}
             disabled={locked || busy} onClick={() => setChoice(o.id)}>
             <span className="key">{LETTERS[i]}</span>
-            <span className={`txt${o.ltr ? ' ltr' : ''}`}>{o.text}</span>
+            {ch.view === 'robot'
+              ? <span className="txt"><Arrows text={o.text} /></span>
+              : <span className={`txt${o.ltr ? ' ltr' : ''}`}>{o.text}</span>}
           </button>
         ))}
       </div>
@@ -133,7 +144,7 @@ export function ChallengeScreen(p: Props) {
 
       {error && <div className="alert" role="alert">{error}</div>}
 
-      {!feedback && (
+      {!feedback && !play && (
         <div className="dock"><div>
           <button className="btn" onClick={submit} disabled={!choice || busy}>{busy ? 'جارٍ الإرسال…' : 'تأكيد الإجابة'}</button>
         </div></div>

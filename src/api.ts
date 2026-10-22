@@ -35,29 +35,40 @@ async function send(payload: object): Promise<Response> {
   });
 }
 
+/** عدد المحاولات عندما يرد الخادم بأنه مشغول، قبل إظهار الرسالة للمشارك */
+const BUSY_TRIES = 5;
+
 async function call<T>(action: string, body: object = {}): Promise<T> {
   if (!API_URL || API_URL.includes('PASTE_')) throw new ApiError('NO_CONFIG');
   const payload = { action, ...body };
-  let res: Response;
-  try {
-    res = await send(payload);
-  } catch {
-    // محاولة ثانية واحدة عند انقطاع مؤقت
-    await new Promise(r => setTimeout(r, 1200));
+  for (let tries = 1; ; tries++) {
+    let res: Response;
     try {
       res = await send(payload);
     } catch {
-      throw new ApiError('NETWORK');
+      // محاولة ثانية واحدة عند انقطاع مؤقت
+      await new Promise(r => setTimeout(r, 1200));
+      try {
+        res = await send(payload);
+      } catch {
+        throw new ApiError('NETWORK');
+      }
     }
+    let json: { ok: boolean; error?: string };
+    try {
+      json = await res.json();
+    } catch {
+      throw new ApiError('SERVER_ERROR');
+    }
+    // الخادم يرد بـ BUSY قبل أن يكتب أي شيء، فإعادة الطلب بصمت آمنة.
+    // الانتظار عشوائي حتى لا يعود الجميع في اللحظة نفسها.
+    if (json.error === 'BUSY' && tries < BUSY_TRIES) {
+      await new Promise(r => setTimeout(r, 1500 + Math.random() * 2000));
+      continue;
+    }
+    if (!json.ok) throw new ApiError(json.error || 'SERVER_ERROR');
+    return json as T;
   }
-  let json: { ok: boolean; error?: string };
-  try {
-    json = await res.json();
-  } catch {
-    throw new ApiError('SERVER_ERROR');
-  }
-  if (!json.ok) throw new ApiError(json.error || 'SERVER_ERROR');
-  return json as T;
 }
 
 export const api = {
